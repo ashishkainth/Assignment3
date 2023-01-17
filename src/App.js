@@ -3,8 +3,12 @@ import ReactDOM from "react-dom/client";
 import Header from "./components/Header/Header";
 import { Footer } from "./components/Footer/Footer";
 import Body from "./components/Body/Body";
-
-
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import About from "./components/screens/About";
+import Contact from "./components/screens/Contact";
+import Error from "./components/screens/Error";
+import Cart from "./components/screens/Cart";
+import RestaurantDetails from "./components/screens/RestaurantDetails";
 
 const RestaurantAppLayout = () => {
   return (
@@ -28,12 +32,43 @@ const RestaurantAppLayout = () => {
      */
     <React.Fragment>
       <Header />
-      <Body />
+      {/* <Body /> */}
+      <Outlet />
       <Footer />
     </React.Fragment>
   );
 };
 
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RestaurantAppLayout />,
+    errorElement: <Error />,
+    children: [
+      {
+        path: "/",
+        element: <Body />,
+      },
+      {
+        path: "/about",
+        element: <About />,
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
+      },
+      {
+        path: "/cart",
+        element: <Cart />,
+      },
+      {
+        path: "/restaurant/:id",
+        element: <RestaurantDetails />,
+      },
+    ],
+  },
+]);
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-root.render(<RestaurantAppLayout />);
+root.render(<RouterProvider router={router} />);
