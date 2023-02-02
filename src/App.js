@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import Header from "./components/Header/Header";
 import { Footer } from "./components/Footer/Footer";
@@ -11,6 +11,9 @@ import Cart from "./components/screens/Cart";
 import RestaurantDetails from "./components/screens/RestaurantDetails";
 import Profile from "./components/screens/Profile";
 import ProfileClass from "./components/screens/ProfileClass";
+import Shimmer from "./components/Shimmer";
+
+const Instamart = lazy(() => import("./components/screens/Instamart"));
 
 const RestaurantAppLayout = () => {
   return (
@@ -68,6 +71,14 @@ const router = createBrowserRouter([
       {
         path: "/cart",
         element: <Cart />,
+      },
+      {
+        path: "/instamart",
+        element: (
+          <Suspense fallback={<Shimmer />}>
+            <Instamart />
+          </Suspense>
+        ),
       },
       {
         path: "/restaurant/:id",
