@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import RestaurantCard from "../RestaurantCard";
 import Shimmer from "../Shimmer";
 import { Link } from "react-router-dom";
 import { filterRestaurantList } from "../../utils/helper";
 import useOnline from "../../utils/useOnline";
+import UserContext from "../../utils/UserContext";
 
 const Body = () => {
   const [searchText, setSearchtext] = useState("");
   const [restaurantListData, setRestaurantListData] = useState([]);
   const [localRestaurantListData, setLocalRestaurantListData] = useState([]);
+  const { user, setUserInfo } = useContext(UserContext);
 
   async function getRestaurantsData() {
     const data = await fetch(
@@ -38,7 +40,7 @@ const Body = () => {
 
   return (
     <>
-      <div className="search-container">
+      <div className="search-container p-5 bg-purple-100 shadow-xl m-2">
         <input
           type="text"
           placeholder="Search text"
@@ -47,6 +49,19 @@ const Body = () => {
             setSearchtext(e.target.value);
           }}
           style={{ margin: 10 }}
+          className="border-sky-500 border p-2 focus:bg-cyan-900 focus:text-white"
+        />
+        <input
+          value={user.name}
+          onChange={(e) => {
+            setUserInfo({ ...user, name: e.target.value });
+          }}
+        />
+        <input
+          value={user.email}
+          onChange={(e) => {
+            setUserInfo({ ...user, email: e.target.value });
+          }}
         />
         <button
           onClick={() => {
@@ -54,6 +69,7 @@ const Body = () => {
               filterRestaurantList(restaurantListData, searchText)
             );
           }}
+          className="border border-pink-800 rounded-md p-2 "
         >
           Search
         </button>
@@ -64,7 +80,7 @@ const Body = () => {
           <Shimmer />
         </div>
       ) : (
-        <div className="body">
+        <div className="flex flex-wrap">
           {localRestaurantListData.map((restaurant) => {
             return (
               <Link

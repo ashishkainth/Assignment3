@@ -12,10 +12,16 @@ import RestaurantDetails from "./components/screens/RestaurantDetails";
 import Profile from "./components/screens/Profile";
 import ProfileClass from "./components/screens/ProfileClass";
 import Shimmer from "./components/Shimmer";
+import { useState } from "react";
+import UserContext from "./utils/UserContext";
 
 const Instamart = lazy(() => import("./components/screens/Instamart"));
 
 const RestaurantAppLayout = () => {
+  const [userInfo, setUserInfo] = useState({
+    name: "Ashish kainth",
+    email: "kainth.ashish@gmail.com",
+  });
   return (
     /**
      * Header
@@ -35,12 +41,12 @@ const RestaurantAppLayout = () => {
      *      - links
      *      - copyright
      */
-    <React.Fragment>
+    <UserContext.Provider value={{ user: userInfo, setUserInfo: setUserInfo }}>
       <Header />
       {/* <Body /> */}
       <Outlet />
       <Footer />
-    </React.Fragment>
+    </UserContext.Provider>
   );
 };
 
