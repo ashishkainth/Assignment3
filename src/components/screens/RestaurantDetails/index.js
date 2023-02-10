@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import { addItem } from "../../../cartSlice";
 import { IMG_CDN_URL } from "../../../Constant";
 import useRestaurantDetails from "../../../utils/useRestaurantDetails";
 import useRestaurantMenu from "../../../utils/useRestaurantmenu";
@@ -8,7 +10,14 @@ const RestaurantDetails = () => {
 
   const restaurantDetails = useRestaurantDetails(id);
 
+  const dispatch = useDispatch();
+
   const menuDetails = useRestaurantMenu(id);
+
+  const handleAddItem = (item) => {
+    const { title } = item.card?.card?.title;
+    dispatch(addItem(item));
+  };
   // const [menuDetails, setMenuList] = useState(null);
 
   // async function getRestaurantDetails() {
@@ -46,7 +55,18 @@ const RestaurantDetails = () => {
             return (
               <div key={index}>
                 {item.card?.card?.title ? (
-                  <li>{item.card?.card?.title}</li>
+                  <>
+                    <li className="p-2">
+                      {item.card?.card?.title}
+                      {" - "}
+                      <button
+                        className="bg-green-300 p-1"
+                        onClick={() => handleAddItem(item)}
+                      >
+                        Add Item
+                      </button>
+                    </li>
+                  </>
                 ) : null}
               </div>
             );

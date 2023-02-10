@@ -1,11 +1,19 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import UserContext from "../../utils/UserContext";
-const Title = () => <h1 class="py-10">Incredible Foods</h1>;
+import { useDispatch, useSelector } from "react-redux";
+import { resetCart } from "../../cartSlice";
+
+const Title = () => <h1 className="py-10">Incredible Foods</h1>;
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const { user } = useContext(UserContext);
+  const dispatch = useDispatch();
+
+  const cartItems = useSelector((store) => store.cart.items);
+
+  
   return (
     <div className="flex justify-between bg-purple-100 shadow-xl sm:bg-yellow-50 md:bg-orange-400">
       <a href="/">
@@ -28,13 +36,15 @@ const Header = () => {
             <Link to="/contact">Contact</Link>
           </li>
           <li className="px-2">
-            <Link to="/cart">Cart</Link>
+            <Link to="/cart">Cart - {cartItems.length} items</Link>
           </li>
           <li className="px-2">
             <Link to="/instamart">Instamart</Link>
           </li>
         </ul>
       </div>
+
+     
       <h1>{user.name}</h1>
       <button
         onClick={() => {

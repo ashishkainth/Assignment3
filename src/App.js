@@ -14,6 +14,8 @@ import ProfileClass from "./components/screens/ProfileClass";
 import Shimmer from "./components/Shimmer";
 import { useState } from "react";
 import UserContext from "./utils/UserContext";
+import { Provider } from "react-redux";
+import { store } from "./store";
 
 const Instamart = lazy(() => import("./components/screens/Instamart"));
 
@@ -41,12 +43,16 @@ const RestaurantAppLayout = () => {
      *      - links
      *      - copyright
      */
-    <UserContext.Provider value={{ user: userInfo, setUserInfo: setUserInfo }}>
-      <Header />
-      {/* <Body /> */}
-      <Outlet />
-      <Footer />
-    </UserContext.Provider>
+    <Provider store={store}>
+      <UserContext.Provider
+        value={{ user: userInfo, setUserInfo: setUserInfo }}
+      >
+        <Header />
+        {/* <Body /> */}
+        <Outlet />
+        <Footer />
+      </UserContext.Provider>
+    </Provider>
   );
 };
 
